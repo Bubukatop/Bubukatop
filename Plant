@@ -1,0 +1,33 @@
+import telebot
+from os import listdir
+from random import choice
+from settings import TOKEN
+
+bot = telebot.TeleBot(TOKEN)
+
+@bot.message_handler(commands=['start'])
+def start_command(message):
+    bot.send_message(message.chat.id, 'Привет! Я бот садовод я помогу тебе начать уменьшить количество отходов.Напиши: /pon что бы увидеть команды')
+   
+@bot.message_handler(commands=["pon"])
+def send_mem(message):
+    bot.send_message(message.chat.id, 'Команды:/plant, /info')
+
+
+
+@bot.message_handler(commands=["plant"])
+def send_mem(message):
+    random_plant = choice(listdir("plants"))
+    with open (f"plants/{random_plant}", "rb") as file:
+        bot.send_photo(message.chat.id, file)
+
+
+@bot.message_handler(commands=["info"])
+def send_mem(message):
+    bot.send_message(message.chat.id, 'Растений на нашей земле насчитывается более 375 тысяч видов')
+    
+
+
+
+bot.polling()
+
